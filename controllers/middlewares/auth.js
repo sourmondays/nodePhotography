@@ -3,7 +3,6 @@
 const { User } = require('../../models');
 
 const basic = async (req, res, next) => {
-    console.log("Hello from Auth basic!");
 
     // Check if Auth header exists, otherwise fail. 
     if (!req.headers.authorization) {
@@ -17,12 +16,12 @@ const basic = async (req, res, next) => {
     // Basic auth
     const [authSchema, base64Payload] = req.headers.authorization.split(' ');
 
-    if (authSchema.toLowerCase() === "basic") {
+    if (authSchema.toLowerCase() !== "basic") {
         // Not our auth
         next();
     }
 
-    const decodedPayload = new Buffer.from(base64Payload, 'base64').toString('ascii');
+    const decodedPayload = Buffer.from(base64Payload, 'base64').toString('ascii');
 
     // username:password
     const [username, password] = decodedPayload.split(':');
@@ -33,6 +32,7 @@ const basic = async (req, res, next) => {
             status: 'fail',
             data: 'Authorization failed'
         })
+        return;
     }
 
     /**

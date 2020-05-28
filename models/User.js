@@ -10,15 +10,11 @@ module.exports = (bookshelf) => {
                 return this.belongsToMany("Photo");
             },
             albums() {
-                return this.belongsToMany("album");
+                return this.belongsToMany("Album");
             },
         },
         {
             hashSaltRounds: 10,
-
-            fetchById(id, fetchOptions = {}) {
-                return new this({ id }).fetch(fetchOptions);
-            },
 
             async login(username, password) {
                 // Look if user exists in DB.
