@@ -1,8 +1,8 @@
-// Album Controller 
+// ALBUM CONTROLLER
 
 const models = require('../models');
 
-// GET - Get all resources
+// GET - Get all resources. 
 const index = async (req, res) => {
     const all_albums = await models.Album.fetchAll();
 
@@ -14,7 +14,7 @@ const index = async (req, res) => {
     });
 }
 
-// GET /:albumId - Get a specific resource
+// GET /:albumId - Get a specific resource. 
 const show = async (req, res) => {
     const album = await new models.Album({ id: req.params.albumId }).fetch({
         withRelated: ["albums"],
@@ -28,7 +28,7 @@ const show = async (req, res) => {
     });
 }
 
-// POST / - Store a new resource
+// POST / - Store a new resource. 
 const store = (req, res) => {
     res.status(405).send({
         status: 'fail',
@@ -36,7 +36,7 @@ const store = (req, res) => {
     });
 }
 
-// POST /:albumId - Update a specific resource
+// POST /:albumId - Update a specific resource. 
 const update = (req, res) => {
     res.status(405).send({
         status: 'fail',
@@ -44,7 +44,7 @@ const update = (req, res) => {
     });
 }
 
-// DELETE /:albumId - Destroy a specific resource
+// DELETE /:albumId - Destroy a specific resource. 
 const destroy = (req, res) => {
     res.status(405).send({
         status: 'fail',

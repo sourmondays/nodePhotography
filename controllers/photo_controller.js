@@ -2,7 +2,7 @@
 
 const models = require('../models');
 
-// GET / - Get all resources
+// GET / - Get all resources. 
 const index = async (req, res) => {
     const all_photos = await models.Photo.fetchAll();
 
@@ -14,7 +14,7 @@ const index = async (req, res) => {
     });
 }
 
-// GET /:photoId - Get a specific resource
+// GET /:photoId - Get a specific resource. 
 const show = async (req, res) => {
     const photo = await models.Photo.fetchById(req.params.photoId, { withRelated: ['users'] });
 
@@ -26,7 +26,7 @@ const show = async (req, res) => {
     });
 }
 
-// POST / - Store a new resource
+// POST / - Store a new resource. 
 const store = (req, res) => {
     res.status(405).send({
         status: 'fail',
@@ -34,7 +34,7 @@ const store = (req, res) => {
     });
 }
 
-// POST /:photoId - Update a specific resource
+// POST /:photoId - Update a specific resource. 
 const update = (req, res) => {
     res.status(405).send({
         status: 'fail',
@@ -42,7 +42,7 @@ const update = (req, res) => {
     });
 }
 
-// DELETE /:photoId - Destroy a specific resource
+// DELETE /:photoId - Destroy a specific resource. 
 const destroy = (req, res) => {
     res.status(405).send({
         status: 'fail',

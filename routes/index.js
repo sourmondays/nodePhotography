@@ -1,5 +1,7 @@
 const express = require('express');
 const router = express.Router();
+const auth = require('../controllers/middlewares/auth')
+
 
 //GET
 router.get('/', (req, res) => {
@@ -8,6 +10,8 @@ router.get('/', (req, res) => {
 
 router.use('/photos', require('./photos'));
 router.use('/albums', require('./albums'));
+router.use('/users', require('./users'));
+router.use('/profile', [auth.basic], require('./profile'));
 
 
 module.exports = router;
