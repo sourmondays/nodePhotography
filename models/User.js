@@ -16,6 +16,7 @@ module.exports = (bookshelf) => {
         {
             hashSaltRounds: 10,
 
+
             async login(username, password) {
                 // Look if user exists in DB.
                 const user = await new this({ username }).fetch({ require: false });

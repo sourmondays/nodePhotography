@@ -11,6 +11,9 @@ router.get('/', (req, res) => {
 router.use('/api/photos', require('./photos'));
 router.use('/api/albums', require('./albums'));
 router.use('/api/users', require('./users'));
+
+router.use('/photos', require('./photos'));
+router.use('/albums', require('./albums'));
 router.use('/register', require('./users'));
 router.use('/profile', [auth.basic], require('./profile'));
 

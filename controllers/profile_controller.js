@@ -33,8 +33,9 @@ const getPhotos = async (req, res) => {
     }
 
     // Query db for photos this user has. 
-    await req.user.load('photos');
-    const photos = req.user.related('photos');
+    const userId = req.user.get('id');
+    const user = await new User({ id: userId }).fetch({ withRelated: 'photos' });
+    const photos = user.related('photos');
 
     res.send({
         status: 'success',
@@ -43,6 +44,30 @@ const getPhotos = async (req, res) => {
         },
     });
 }
+
+// GET /albums - Get the authenticated user's photos.
+const getAlbums = async (req, res) => {
+    if (!req.user) {
+        res.status(401).send({
+            status: 'fail',
+            data: 'Authentication Required.',
+        });
+        return;
+    }
+
+    // Query db for photos this user has. 
+    const userId = req.user.get('id');
+    const user = await new User({ id: userId }).fetch({ withRelated: 'albums' });
+    const albums = user.related('albums');
+
+    res.send({
+        status: 'success',
+        data: {
+            albums,
+        },
+    });
+}
+
 
 // PUT - Update the authenticated user's profile. 
 const updateProfile = async (req, res) => {
@@ -102,5 +127,6 @@ const updateProfile = async (req, res) => {
 module.exports = {
     getProfile,
     getPhotos,
+    getAlbums,
     updateProfile,
 }
