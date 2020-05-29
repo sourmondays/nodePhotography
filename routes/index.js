@@ -8,7 +8,7 @@ router.get('/', (req, res) => {
   res.send({ status: 'Much welcome to my nodePhotoApp!' });
 });
 
-router.use('/api/photos', require('./photos'));
+// router.use('/api/photos', require('./photos'));
 router.use('/api/albums', require('./albums'));
 router.use('/api/users', require('./users'));
 
