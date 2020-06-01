@@ -5,11 +5,11 @@ const models = require('../models');
 
 // GET / - Get all resources
 const index = async (req, res) => {
-    const all_users = await models.User.fetchAll();
+    const allUsers = await models.User.fetchAll();
     res.send({
         status: 'success',
         data: {
-            users: all_users
+            users: allUsers
         }
     });
 }

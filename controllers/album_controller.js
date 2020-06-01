@@ -51,18 +51,21 @@ const getSpecAlbum = async (req, res) => {
 const postAlbums = async (req, res) => {
     const errors = validationResult(req);
     if (!errors.isEmpty()) {
+        console.log("Post photo request failed validation:", errors.array());
         res.status(422).send({
-            status: 'Fail',
+            status: 'fail',
             data: errors.array(),
         });
         return;
     }
+    const validData = matchedData(req);
 
     try {
-        const photo = await models.Photos.fetchById(req.body.photo_id);
-        const album = await models.Album.fetchById(req.params.albumId);
-        const result = await album.photos().attach([photo]);
-
+        const album = await new Album(validData).save()
+        const userId = req.user.get('id');
+        const user = await new User({ id: userId }).fetch({ withRelated: 'albums' });
+        const result = await user.albums().attach(album)
+        console.log("Created new album successfully:", album);
         res.send({
             status: 'success',
             data: {
@@ -70,13 +73,12 @@ const postAlbums = async (req, res) => {
             },
         });
     } catch (error) {
-        res.status(404).send({
+        res.status(500).send({
             status: 'error',
-            message: "This user doesn't own this album.",
+            message: 'Exception thrown in database when creating a new photo.',
         });
         throw error;
     }
-
 }
 
 // POST /albums/:albumid/photo - Post photo to album 
