@@ -1,10 +1,10 @@
 {
-  "name": "06-library",
+  "name": "nodePhotoApp",
   "version": "0.1.0",
   "private": true,
   "scripts": {
     "start": "node ./bin/www",
-    "dev": "DEBUG=06-library:* nodemon --inspect ./bin/www"
+    "dev": "DEBUG=nodePhotoApp:* nodemon --inspect ./bin/www"
   },
   "dependencies": {
     "bcrypt": "^4.0.1",
@@ -19,5 +19,9 @@
     "morgan": "~1.9.1",
     "mysql": "^2.18.1",
     "nodemon": "^2.0.4"
+  },
+  "devDependencies": {},
+  "engines": {
+    "node": "12.x"
   }
 }
