@@ -51,7 +51,6 @@ const getSpecAlbum = async (req, res) => {
 const postAlbums = async (req, res) => {
     const errors = validationResult(req);
     if (!errors.isEmpty()) {
-        console.log("Post photo request failed validation:", errors.array());
         res.status(422).send({
             status: 'fail',
             data: errors.array(),
@@ -83,7 +82,6 @@ const postAlbums = async (req, res) => {
 
 // POST /albums/:albumid/photo - Post photo to album 
 const postPhotoInAlbum = async (req, res) => {
-    // Finds the validation errors in this request and wraps them in an object with handy functions
     const error = validationResult(req);
     if (!error.isEmpty()) {
         res.status(422).send({

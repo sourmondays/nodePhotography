@@ -53,7 +53,6 @@ const getSpecPhoto = async (req, res) => {
 const postPhotos = async (req, res) => {
     const errors = validationResult(req);
     if (!errors.isEmpty()) {
-        console.log("Post photo request failed validation:", errors.array());
         res.status(422).send({
             status: 'fail',
             data: errors.array(),
@@ -67,7 +66,6 @@ const postPhotos = async (req, res) => {
         const userId = req.user.get('id');
         const user = await new User({ id: userId }).fetch({ withRelated: 'photos' });
         const result = await user.photos().attach(photo)
-        console.log("Created new photo successfully:", photo);
         res.send({
             status: 'success',
             data: {
