@@ -13,7 +13,7 @@ router.get('/:userId', userController.show);
 router.post('/', userValidationRules.createRules, userController.store);
 
 // Update a specific
-router.put('/:userId', userValidationRules.updateRules, userController.update);
+router.put('/:userId', userController.update);
 
 // Destroy a specific
 router.delete('/:userId', userController.destroy);

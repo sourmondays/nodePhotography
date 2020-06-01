@@ -18,14 +18,6 @@ const createRules = [
     body('email').isLength({ min: 5 }),
 ];
 
-const updateRules = [
-    body('password').optional().isLength({ min: 3 }),
-    body('first_name').optional().isLength({ min: 2 }),
-    body('last_name').optional().isLength({ min: 2 }),
-    body('email').optional().isLength({ min: 5 }),
-];
-
 module.exports = {
     createRules,
-    updateRules,
 }

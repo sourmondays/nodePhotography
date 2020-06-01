@@ -80,11 +80,8 @@ const postAlbums = async (req, res) => {
 }
 
 // POST /albums/:albumid/photo - Post photo to album 
-const postPhotoInAlbum = (req, res) => {
-    res.status(405).send({
-        status: 'fail',
-        message: 'Method will be updated soon!',
-    });
+const postPhotoInAlbum = async (req, res) => {
+    //Soon...this will be updated
 }
 
 // POST /:albumId - Update a specific resource. 
