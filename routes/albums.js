@@ -14,7 +14,7 @@ router.get('/:albumId', albumController.getSpecAlbum);
 router.post('/', postAlbumValidationRules.createAlbumRules, albumController.postAlbums);
 
 // Post photo in album
-router.post('/:albumId/photo', albumController.postPhotoInAlbum);
+router.post('/:albumId/photo', postAlbumValidationRules.photoToAlbum, albumController.postPhotoInAlbum);
 
 // Update a specific album
 router.put('/:albumId', albumController.update);

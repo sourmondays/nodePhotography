@@ -1,6 +1,7 @@
 // ALBUM CONTROLLER
 
 const { User, Album } = require('../models');
+const models = require('../models');
 const { matchedData, validationResult } = require('express-validator');
 
 const getAlbums = async (req, res) => {
@@ -51,18 +52,16 @@ const postAlbums = async (req, res) => {
     const errors = validationResult(req);
     if (!errors.isEmpty()) {
         res.status(422).send({
-            status: 'fail',
+            status: 'Fail',
             data: errors.array(),
         });
         return;
     }
-    const validData = matchedData(req);
 
     try {
-        const album = await new Album(validData).save()
-        const userId = req.user.get('id');
-        const user = await new User({ id: userId }).fetch({ withRelated: 'albums' });
-        const result = await user.albums().attach(album)
+        const photo = await models.Photos.fetchById(req.body.photo_id);
+        const album = await models.Album.fetchById(req.params.albumId);
+        const result = await album.photos().attach([photo]);
 
         res.send({
             status: 'success',
@@ -71,17 +70,43 @@ const postAlbums = async (req, res) => {
             },
         });
     } catch (error) {
-        res.status(500).send({
+        res.status(404).send({
             status: 'error',
-            message: 'Exception thrown in database when creating a new photo.',
+            message: "This user doesn't own this album.",
         });
         throw error;
     }
+
 }
 
 // POST /albums/:albumid/photo - Post photo to album 
 const postPhotoInAlbum = async (req, res) => {
-    //Soon...this will be updated
+    // Finds the validation errors in this request and wraps them in an object with handy functions
+    const error = validationResult(req);
+    if (!error.isEmpty()) {
+        res.status(422).send({
+            status: 'Fail',
+            data: error.array()
+        });
+        return;
+    }
+    try {
+        const photo = await models.Photo.fetchById(req.body.photo_id);
+        const album = await models.Album.fetchById(req.params.albumId);
+        const photoAlbum = await album.photo().attach([photo]);
+
+
+        res.status(201).send({
+            status: 'success',
+            data: photoAlbum,
+        })
+    } catch (error) {
+        res.status(404).send({
+            status: 'error',
+            message: "This user doesn't own this album.",
+        });
+        throw error;
+    }
 }
 
 // POST /:albumId - Update a specific resource. 

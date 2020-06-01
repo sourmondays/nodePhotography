@@ -14,8 +14,14 @@ const createAlbumRules = [
 
 ];
 
+const photoToAlbum = [
+    body('photo_id').custom(value => {
+        return models.Photo.fetchById(value);
+    })
+];
+
 
 module.exports = {
     createAlbumRules,
-
+    photoToAlbum
 }

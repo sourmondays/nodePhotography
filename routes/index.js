@@ -5,7 +5,7 @@ const auth = require('../controllers/middlewares/auth')
 
 //GET
 router.get('/', (req, res) => {
-  res.send({ status: 'Much welcome to my nodePhotoApp!' });
+  res.send({ status: 'Much welcome to my Node Photo App!' });
 });
 
 router.use('/photos', [auth.basic], require('./photos'));

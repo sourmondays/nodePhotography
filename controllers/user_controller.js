@@ -41,7 +41,8 @@ const store = async (req, res) => {
     const validData = matchedData(req);
     // generate a hash of `validData.password`
     try {
-        validData.password = await bcrypt.hash(validData.password, models.User.hashSaltRounds); // hash.salt is returned from bcrypt.hash()
+        validData.password = await bcrypt.hash(validData.password, models.User.hashSaltRounds);
+        // hash.salt is returned from bcrypt.hash()
     } catch (error) {
         res.status(500).send({
             status: 'error',
