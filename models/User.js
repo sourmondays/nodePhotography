@@ -6,15 +6,19 @@ module.exports = (bookshelf) => {
         "User",
         {
             tableName: "users",
-            photos() {
-                return this.belongsToMany("Photo");
-            },
             albums() {
                 return this.belongsToMany("Album");
             },
+            photos() {
+                return this.belongsToMany("Photo");
+            }
         },
         {
             hashSaltRounds: 10,
+
+            fetchById(id, fetchOptions = {}) {
+                return new this({ id }).fetch(fetchOptions);
+            },
 
 
             async login(username, password) {

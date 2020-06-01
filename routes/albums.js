@@ -1,15 +1,20 @@
 const express = require('express');
 const router = express.Router();
 const albumController = require('../controllers/album_controller');
+const postAlbumValidationRules = require('../validation_rules/album');
 
-// Get all albums
-router.get('/', albumController.index);
 
-// Get a specific album
-router.get('/:albumId', albumController.show);
+// Get albums
+router.get('/', albumController.getAlbums);
 
-// Store a new album
-router.post('/', albumController.store);
+// Get a specific album 
+router.get('/:albumId', albumController.getSpecAlbum);
+
+// Post albums
+router.post('/', postAlbumValidationRules.createAlbumRules, albumController.postAlbums);
+
+// Post photo in album
+// router.post('/:albumId/photo', postAlbumValidationRules.createAlbumRules, albumController.postPhotos);
 
 // Update a specific album
 router.put('/:albumId', albumController.update);

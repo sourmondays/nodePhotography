@@ -1,14 +1,9 @@
-/**
- * User Cotrollers
- */
+// USER CONTROLLER 
 const bcrypt = require('bcrypt');
 const { matchedData, validationResult } = require('express-validator');
 const models = require('../models');
-/**
- * Get all resources
- *
- * GET /
- */
+
+// GET / - Get all resources
 const index = async (req, res) => {
     const all_users = await models.User.fetchAll();
     res.send({
@@ -18,11 +13,8 @@ const index = async (req, res) => {
         }
     });
 }
-/**
- * Get a specific resource
- *
- * GET /:userId
- */
+
+// GET /:userId - Get a specific resource 
 const show = async (req, res) => {
     const user = await new models.User({ id: req.params.userId })
         .fetch({ withRelated: ['photos'] });
@@ -33,11 +25,8 @@ const show = async (req, res) => {
         }
     });
 }
-/**
- * Store a new resource
- *
- * POST /
- */
+
+// POST / - Store a new resource
 const store = async (req, res) => {
     // Finds the validation errors in this request and wraps them in an object with handy functions
     const errors = validationResult(req);
@@ -77,11 +66,8 @@ const store = async (req, res) => {
         throw error;
     }
 }
-/**
- * Update a specific resource
- *
- * POST /:userId
- */
+
+// POST /:userId - Update a specific resource
 const update = async (req, res) => {
     const userId = req.params.userId;
     const user = await new models.User({ id: userId }).fetch({ require: false });
@@ -121,11 +107,8 @@ const update = async (req, res) => {
         throw error;
     }
 }
-/**
- * Destroy a specific resource
- *
- * DELETE /:userId
- */
+
+// DELETE /:userId - Destroy a specific resource
 const destroy = (req, res) => {
     res.status(405).send({
         status: 'fail',

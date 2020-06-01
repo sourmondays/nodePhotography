@@ -9,7 +9,7 @@ module.exports = (bookshelf) => {
         photos() {
             return this.belongsTo('Photo');
         },
-        albums() {
+        photo() {
             return this.belongsToMany('Photo')
         }
     }, {

@@ -1,38 +1,89 @@
 // ALBUM CONTROLLER
 
-const models = require('../models');
+const { User, Album } = require('../models');
+const { matchedData, validationResult } = require('express-validator');
 
-// GET - Get all resources. 
-const index = async (req, res) => {
-    const all_albums = await models.Album.fetchAll();
+const getAlbums = async (req, res) => {
+    if (!req.user) {
+        res.status(401).send({
+            status: 'fail',
+            data: 'Authentication Required.',
+        });
+        return;
+    }
+
+    // Query db for photos this user has. 
+    const userId = req.user.get('id');
+    const user = await new User({ id: userId }).fetch({ withRelated: 'albums' });
+    const albums = user.related('albums');
 
     res.send({
         status: 'success',
         data: {
-            albums: all_albums
-        }
+            albums,
+        },
     });
 }
 
 // GET /:albumId - Get a specific resource. 
-const show = async (req, res) => {
-    const album = await new models.Album({ id: req.params.albumId }).fetch({
-        withRelated: ["albums"],
+const getSpecAlbum = async (req, res) => {
+    const album = await new Album({ id: req.params.albumId }).fetch({
+        withRelated: ["photo"],
     });
 
-    res.send({
-        status: 'success',
-        data: {
-            album,
-        }
-    });
+    if (req.user.id === album.attributes.user_id) {
+        res.send({
+            status: 'success',
+            album: {
+                album,
+            }
+        });
+    } else {
+        res.status(404).send({
+            status: 'Fail',
+            data: "This user doesn't own this album."
+        })
+    }
+};
+
+// POST /albums - Post to authenticated user's albums
+const postAlbums = async (req, res) => {
+    const errors = validationResult(req);
+    if (!errors.isEmpty()) {
+        res.status(422).send({
+            status: 'fail',
+            data: errors.array(),
+        });
+        return;
+    }
+    const validData = matchedData(req);
+
+    try {
+        const album = await new Album(validData).save()
+        const userId = req.user.get('id');
+        const user = await new User({ id: userId }).fetch({ withRelated: 'albums' });
+        const result = await user.albums().attach(album)
+
+        res.send({
+            status: 'success',
+            data: {
+                result,
+            },
+        });
+    } catch (error) {
+        res.status(500).send({
+            status: 'error',
+            message: 'Exception thrown in database when creating a new photo.',
+        });
+        throw error;
+    }
 }
 
-// POST / - Store a new resource. 
-const store = (req, res) => {
+// POST /albums/:albumid/photo - Post photo to album 
+const postPhotoInAlbum = (req, res) => {
     res.status(405).send({
         status: 'fail',
-        message: 'Method Not Allowed.',
+        message: 'Method will be updated soon!',
     });
 }
 
@@ -53,9 +104,10 @@ const destroy = (req, res) => {
 }
 
 module.exports = {
-    index,
-    show,
-    store,
+    getAlbums,
+    getSpecAlbum,
+    postAlbums,
+    postPhotoInAlbum,
     update,
     destroy,
 }
