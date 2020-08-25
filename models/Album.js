@@ -1,5 +1,4 @@
-// Album Model
-
+//ALBUM MODEL
 module.exports = (bookshelf) => {
     return bookshelf.model('Album', {
         tableName: 'albums',
